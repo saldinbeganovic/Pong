@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using SharpDX.Direct3D9;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,6 +27,7 @@ public class GameState : State
     {
         Globals.SpriteBatch.DrawString(Globals.Font, Globals.Player1_score.ToString(), new Vector2(100, 50), Color.White);
         Globals.SpriteBatch.DrawString(Globals.Font, Globals.Player2_score.ToString(), new Vector2(Globals.Width - 112, 50), Color.White);
+
         _playerOne.Draw();
         _playerTwo.Draw();
         _ball.Draw();

@@ -11,6 +11,8 @@ namespace Pong.Components;
 
 public abstract class Component
 {
+    public bool IsVisible { get; set; }
+
     public abstract void Draw(GameTime gameTime);
 
     public abstract void Update(GameTime gameTime);

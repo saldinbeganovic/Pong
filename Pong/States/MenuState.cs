@@ -4,11 +4,6 @@ using Microsoft.Xna.Framework.Graphics;
 using Pong.Components;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Component = Pong.Components.Component;
 
 namespace Pong.States;
@@ -21,18 +16,24 @@ public class MenuState : State
 
     public MenuState(Game1 game, GraphicsDevice graphicsDevice, ContentManager content) : base(game, graphicsDevice, content)
     {
+        _playerOne = new Paddle(40, 200, Color.Wheat);
+        _playerTwo = new Paddle(40, 200, Color.Wheat, true);
+        AddComponents(graphicsDevice);
+    }
+
+    private void AddComponents(GraphicsDevice graphicsDevice)
+    {
         int centerX = Globals.Width / 2;
         int centerY = Globals.Height / 2;
         int marginBottom = 20;
         Color foreground = Color.Black;
         Color background = Color.White;
-        _playerOne = new Paddle(40, 200, Color.Wheat);
-        _playerTwo = new Paddle(40, 200, Color.Wheat, true);
 
         Button customizeButton = new Button("CUSTOMIZE", new Rectangle(centerX - 100, Globals.Height - 60 - marginBottom, 200, 60), foreground, background);
         Button startButton = new Button("START GAME", new Rectangle(centerX - 100, customizeButton.Bounds.Y - 60 - marginBottom, 200, 60), foreground, background);
 
         ColorPicker colorPicker = new ColorPicker(graphicsDevice);
+        colorPicker.IsVisible = false;
         startButton.Clicked += Start_Clicked;
         customizeButton.Clicked += CustomizeButton_Clicked;
 
