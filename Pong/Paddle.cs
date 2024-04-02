@@ -12,19 +12,6 @@ public class Paddle
 {
     public Rectangle Rect;
     public Color PlayerColor { get; set; }
-    private PowerUp? _powerUp;
-
-    public PowerUp? PowerUp
-    {
-        get => _powerUp;
-        set
-        {
-            if (value is PowerUp powerUp)
-            {
-                SetPower(powerUp.Effect);
-            }
-        }
-    }
 
     private bool _isSecondPlayer;
     private float _moveSpeed = 800f;
@@ -38,12 +25,16 @@ public class Paddle
         Rect = new Rectangle((_isSecondPlayer ? Globals.Width - (width + 5) : 5), y, width, height);
     }
 
-    private void SetPower(PowerUpEffects effect)
+    public void SetPower(PowerUp powerUp)
     {
-        switch (effect)
+        switch (powerUp.Effect)
         {
             case PowerUpEffects.SizeUp:
                 Rect.Height += 50;
+                break;
+
+            case PowerUpEffects.SizeDown:
+                Rect.Height -= 50;
                 break;
         }
     }
