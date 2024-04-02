@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using Pong.Components;
 using SharpDX.Direct3D9;
 using System;
 using System.Collections.Generic;
@@ -15,12 +16,16 @@ public class GameState : State
     private Paddle _playerOne;
     private Paddle _playerTwo;
     private Ball _ball;
+    private List<PowerUp> _powerUps;
 
     public GameState(Game1 game, GraphicsDevice graphicsDevice, ContentManager content) : base(game, graphicsDevice, content)
     {
         _playerOne = new Paddle(40, 200, Color.Red);
         _playerTwo = new Paddle(40, 200, Color.Blue, true);
         _ball = new Ball(40, 40);
+        _powerUps = new List<PowerUp>();
+        PowerUp powerUp = new PowerUp(Models.PowerUpType.Friendly, Models.PowerUpEffects.SizeUp);
+        _powerUps.Add(powerUp);
     }
 
     public override void Draw(GameTime gameTime)
@@ -30,6 +35,10 @@ public class GameState : State
 
         _playerOne.Draw();
         _playerTwo.Draw();
+        foreach (PowerUp powerUp in _powerUps)
+        {
+            powerUp.Draw(gameTime);
+        }
         _ball.Draw();
     }
 
@@ -42,6 +51,10 @@ public class GameState : State
     {
         _playerOne.Update(gameTime);
         _playerTwo.Update(gameTime);
-        _ball.Update(gameTime, _playerOne, _playerTwo);
+        foreach (PowerUp powerUp in _powerUps)
+        {
+            powerUp.Update(gameTime);
+        }
+        _ball.Update(gameTime, _playerOne, _playerTwo, _powerUps);
     }
 }

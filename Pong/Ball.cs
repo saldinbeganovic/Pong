@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Pong.Components;
 using SharpDX.Direct3D9;
 using System;
 using System.Collections.Generic;
@@ -26,13 +27,14 @@ public class Ball
         _rect = new Rectangle(Globals.Width / 2 - width / 2, Globals.Height / 2 - height / 2, width, height);
     }
 
-    public void Update(GameTime gameTime, Paddle player1, Paddle player2)
+    public void Update(GameTime gameTime, Paddle player1, Paddle player2, List<PowerUp> powerUps)
     {
         _deltaSpeed = (int)(_moveSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds);
         _rect.X += _right * _deltaSpeed;
         _rect.Y += _top * _deltaSpeed;
 
         CheckPlayerColision(player1, player2);
+        CheckPowerUpColision(powerUps, player1, player2);
         CheckWindowColision();
     }
 
@@ -47,6 +49,26 @@ public class Ball
         {
             _right = -1;
             _ballColor = player2.PlayerColor;
+        }
+    }
+
+    private void CheckPowerUpColision(List<PowerUp> powerUps, Paddle player1, Paddle player2)
+    {
+        foreach (PowerUp powerUp in powerUps)
+        {
+            // Check if the ball's bounds intersect with the power-up's bounds
+            if (_rect.Intersects(powerUp.Bounds))
+            {
+                // Handle the collision here
+                // For example, you can apply the power-up effect to the game
+                player1.PowerUp = powerUp;
+
+                // Optionally, remove the power-up from the list since it has been collected
+                powerUps.Remove(powerUp);
+
+                // Exit the loop since we've found a collision
+                return;
+            }
         }
     }
 

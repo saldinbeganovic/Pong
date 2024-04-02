@@ -1,5 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
+using Pong.Components;
+using Pong.Models;
 using System.Drawing;
 using Color = Microsoft.Xna.Framework.Color;
 using Rectangle = Microsoft.Xna.Framework.Rectangle;
@@ -10,6 +12,19 @@ public class Paddle
 {
     public Rectangle Rect;
     public Color PlayerColor { get; set; }
+    private PowerUp? _powerUp;
+
+    public PowerUp? PowerUp
+    {
+        get => _powerUp;
+        set
+        {
+            if (value is PowerUp powerUp)
+            {
+                SetPower(powerUp.Effect);
+            }
+        }
+    }
 
     private bool _isSecondPlayer;
     private float _moveSpeed = 800f;
@@ -21,6 +36,16 @@ public class Paddle
         _isSecondPlayer = isSecondPlayer;
         PlayerColor = color;
         Rect = new Rectangle((_isSecondPlayer ? Globals.Width - (width + 5) : 5), y, width, height);
+    }
+
+    private void SetPower(PowerUpEffects effect)
+    {
+        switch (effect)
+        {
+            case PowerUpEffects.SizeUp:
+                Rect.Height += 50;
+                break;
+        }
     }
 
     public void Update(GameTime gameTime)
